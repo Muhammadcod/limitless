@@ -6,7 +6,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <nav class="navbar navbar-expand-lg navbar-light borpx-4 ">
+        <nav class="navbar navbar-expand-lg navbar-light px-4 ">
           <button
             class="navbar-toggler"
             type="button"
@@ -35,16 +35,12 @@ class App extends React.Component {
               class=" account-action d-flex "
               style={{ width: "75px", height: "32px", marginLeft: "15px" }}
             >
-              <div
-                class=" sky border"
-                style={{ width: "30px", height: "30px" }}
-              ></div>
+              <div class=" sky" style={{ width: "30px", height: "30px" }}></div>
               <div
                 class=" border text-white"
                 style={{
                   width: "32px",
                   height: "32px",
-
                   borderRadius: "50%",
                   marginLeft: "15px",
                   background: "#4285f4"
