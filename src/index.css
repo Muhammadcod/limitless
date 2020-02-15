@@ -95,3 +95,9 @@ has-search .form-control-feedback {
 .language a:first-of-type {
   margin-left: 5px;
 }
+.listed li {
+  list-style-type: none;
+}
+.profilePicture {
+  background-image: url("https://lh3.googleusercontent.com/-eiymKCZ3FC0/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rdnubPwX_fs9jX8x8G_mc5uLSjnDg.CMID/s32-c/photo.jpg");
+}

@@ -1,128 +1,57 @@
-import React from "react";
-import googlelogo from "./googlelogo.png";
-import "./App.css";
+import React, { useState } from "react";
+import UserDetails from "./UserDetails";
+import UserSearchForm from "./UserSearchForm";
+import Lamb from "./Lamb";
+import Loader from "./Loader";
+import axios from "axios";
 
-class App extends React.Component {
-  render() {
-    return (
-      <div className="App">
-        <nav class="navbar navbar-expand-lg navbar-light px-4 ">
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse " id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto small">
-              <li class="nav-item active">
-                <a class="nav-link" href="/">
-                  Gmail <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/">
-                  Images
-                </a>
-              </li>
-            </ul>
-            <div
-              class=" account-action d-flex "
-              style={{ width: "75px", height: "32px", marginLeft: "15px" }}
-            >
-              <div class=" sky" style={{ width: "30px", height: "30px" }}></div>
-              <div
-                class=" border text-white"
-                style={{
-                  width: "32px",
-                  height: "32px",
-                  borderRadius: "50%",
-                  marginLeft: "15px",
-                  background: "#4285f4"
-                }}
-              >
-                A
-              </div>
-            </div>
-          </div>
-        </nav>
-        <main>
-          <div
-            class=""
-            style={{
-              height: "219px"
-            }}
-          >
-            <div
-              class=" container "
-              style={{
-                height: "201px",
-                paddingTop: "95px"
-              }}
-            >
-              <img src={googlelogo} className="" alt="logo" />
-            </div>
-          </div>
+const App = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [users, setUsers] = useState({ itemListElement: [] });
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-          <form class="">
-            <div class="container ">
-              <div
-                class="form-group has-search mx-auto border d-flex"
-                style={{
-                  borderRadius: "50px",
-                  fontSize: "20px"
-                }}
-              >
-                <span class="fa fa-search fa-xs form-control-feedback"></span>
-                <input
-                  type="text"
-                  class="form-contro border-0"
-                  placeholder=""
-                />
-              </div>
+  let API_URL = `https://kgsearch.googleapis.com/v1/entities:search`;
 
-              <div class="mx-auto butn">
-                <input
-                  class="mr-1"
-                  value="Google Search"
-                  aria-label="Google Search"
-                  name="btnK"
-                  type="submit"
-                />
-                <input
-                  class="ml-1"
-                  value="I'm Feeling Lucky"
-                  aria-label="I'm Feeling Lucky"
-                  name="btnI"
-                  type="submit"
-                />
-              </div>
-            </div>
-          </form>
-          <div class="language small">
-            Google offered in:
-            <a class="" href="/">
-              Hausa
-            </a>
-            <a class="" href="/">
-              Igbo
-            </a>
-            <a class="" href="/">
-              Èdè Yorùbá
-            </a>
-            <a class="" href="/">
-              Nigerian Pidgin
-            </a>
-          </div>
-        </main>
-      </div>
-    );
-  }
-}
+  const fetchUsers = async () => {
+    setLoading(true);
+    setError(false);
+    try {
+      const result = await axios.get(
+        `${API_URL}?key=AIzaSyAZGsxdDpIUBcPJeOtzLs1HZ_ITUd9-E8s&limit=10&query=${searchTerm}`
+      );
+      setUsers(result.data);
+    } catch (error) {
+      setError(true);
+    }
+    setLoading(false);
+  };
+
+  const onInputChange = e => {
+    setSearchTerm(e.target.value);
+  };
+
+  const onSubmitHandler = e => {
+    e.preventDefault();
+    fetchUsers();
+  };
+
+  return (
+    <div>
+      <section>
+        <UserSearchForm
+          onSubmitHandler={onSubmitHandler}
+          onInputChange={onInputChange}
+          searchTerm={searchTerm}
+          error={error}
+        />
+        <Loader searchTerm={searchTerm} loading={loading} />
+        <Lamb />
+
+        <UserDetails users={users} />
+      </section>
+    </div>
+  );
+};
 
 export default App;
